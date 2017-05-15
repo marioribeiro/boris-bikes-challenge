@@ -16,10 +16,23 @@ describe DockingStation do
   end
   
   describe '#release_bike' do
-    it 'releases a bike' do
-      bike = docking_station.release_bike
+    it 'releases a working bike' do
+      bike = Bike.new
+      docking_station.dock(bike)
+      docking_station.release_bike
       expect(bike).to be_working
     end
+
+    it 'docks and releases a bike' do
+      bike = Bike.new
+      docking_station.dock(bike)
+      expect(docking_station.release_bike).to eq bike
+    end
+
+    it 'raises an error when no bikes are available' do
+      expect { docking_station.release_bike }.to raise_error 'No bikes available'
+    end
+
   end
 
 end
