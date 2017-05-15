@@ -13,6 +13,12 @@ describe DockingStation do
       bike = Bike.new
       expect(docking_station.dock(bike)).to eq bike
     end
+
+    it 'raises an error when docking station is full' do
+      20.times { docking_station.dock Bike.new }
+      expect { docking_station.dock Bike.new }.to raise_error 'Docking Station full'
+    end
+
   end
   
   describe '#release_bike' do
