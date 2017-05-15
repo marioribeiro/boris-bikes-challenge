@@ -17,6 +17,7 @@ describe DockingStation do
   
   describe '#release_bike' do
     it 'releases a bike' do
+      bike = docking_station.release_bike
       expect(bike).to be_working
     end
   end
