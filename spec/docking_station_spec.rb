@@ -8,6 +8,8 @@ describe DockingStation do
   it { is_expected.to respond_to(:release_bike) }
   it { is_expected.to respond_to(:dock).with(1).argument }
   it { is_expected.to respond_to(:bike) }
+  it { is_expected.to respond_to(:report_damaged_bike).with(1).argument }
+
 
   it 'has a default capacity' do
     expect(docking_station.capacity).to eq DockingStation::DEFAULT_CAPACITY
@@ -41,7 +43,7 @@ describe DockingStation do
       bike = Bike.new
       docking_station.dock(bike)
       docking_station.release_bike
-      expect(bike).to be_working
+      expect(bike).to_not be_broken
     end
 
     it 'docks and releases a bike' do
@@ -54,6 +56,22 @@ describe DockingStation do
       expect { docking_station.release_bike }.to raise_error 'No bikes available'
     end
 
+    it 'raises an error if there are not working bikes available' do
+      bike = Bike.new
+      docking_station.dock(bike)
+      docking_station.report_damaged_bike(bike)
+      expect { docking_station.release_bike }.to raise_error 'No working bikes available'
+    end
+
+  end
+
+  describe '#report_damaged_bike' do
+    it 'allows user to report a damaged bike' do
+      bike = Bike.new
+        docking_station.dock(bike)
+        docking_station.report_damaged_bike(bike)
+        expect(bike).to be_broken 
+    end
   end
 
 end
